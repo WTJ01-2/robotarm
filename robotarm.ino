@@ -1,4 +1,5 @@
 #include "Logsystem.h"
+#include "Motor.h"
 
 Logsystem robot;
 
