@@ -1,9 +1,8 @@
 #include "Arduino.h"
 #include "Motor.h"
 
-Motor::Motor(){
-}
-
-void Motor::log(String message) {
-  Serial.print(message);
+Motor::Motor(int pin1, int pin2, int power){
+  this->power = power;
+  pinMode(pin1, OUTPUT);
+  pinMode(pin2, OUTPUT);
 }

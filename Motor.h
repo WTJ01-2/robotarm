@@ -6,9 +6,9 @@
 class Motor
 {
   public:
-    Motor();
-    void log(String message);
+    Motor(int pin1, int pin2, int power);
   private:
+    int power;
 };
 
 #endif
