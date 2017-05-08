@@ -8,6 +8,7 @@ class Logsystem
   public:
     Logsystem();
     void log(String message);
+    void log(int message);
   private:
 };
 
