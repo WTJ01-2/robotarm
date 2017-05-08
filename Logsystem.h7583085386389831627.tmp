@@ -1,0 +1,11 @@
+#ifndef Logsystem_h
+#define Logsystem_h
+
+#include "Arduino.h"
+
+class Logsystem
+{
+    void systemLog(string message);
+};
+
+#endif

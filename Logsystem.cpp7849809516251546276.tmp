@@ -1,0 +1,6 @@
+#include "Arduino.h"
+#include "Logsystem.h"
+
+void Logsystem::systemlog(string message) {
+  Serial.print(message);
+}
