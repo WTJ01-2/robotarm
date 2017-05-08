@@ -5,5 +5,5 @@ Logsystem::Logsystem(){
 }
 
 void Logsystem::log(String message) {
-  Serial.print(message);
+  Serial.println(message);
 }
