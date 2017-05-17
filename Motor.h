@@ -14,10 +14,14 @@ class Motor
     void driveLeft(int duration);
     void driveLeft(int duration, byte power);
     void whereAmI(int volt);
+    void whereAmIY(int volt);
     void findVolt(int volt);
+    void findVoltY(int volt);
+    void checkDuur(int volt);
     void stop();
   private:
     int power;
+    long startTime;
     int pin1;
     int pin2;
 

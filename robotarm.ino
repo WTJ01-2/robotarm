@@ -3,14 +3,13 @@
 
 Logsystem message;
 
-Motor motor1(7, 6, 240);
+Motor motor1(7, 6, 255);
 //linkerPins
 Motor motor2(4, 5, 140);
-//Motor motor2(4, 5, 240);
 //rechterPins
 
 String command = "";
-
+int v[5] = {510,338,251,143,30};
 int v1 = 510;
 int v2 = 338;
 int v3 = 251;
@@ -21,67 +20,59 @@ void setup(){
   Serial.begin(9600);
   pinMode(A0, INPUT);
   pinMode(A1, INPUT);
-  pinMode(9, OUTPUT);
-  digitalWrite(9, HIGH);
+  pinMode(3, OUTPUT);
+  digitalWrite(3, HIGH);
 }
 
 boolean wasZero = false;
 void loop(){
-  int readPower = analogRead(A1);
-  Serial.println(readPower);
+  //int readPower = analogRead(A1);
+ // Serial.println(readPower);
   if (Serial.available()) {
       command = Serial.readString();
-      if (command == "1"){
-        motor2.findVolt(v1);
-      }else if (command == "2"){
-       motor2.findVolt(v2);
-      }else if (command == "3"){
-        motor2.findVolt(v3);
-      }else if (command == "4"){
-        motor2.findVolt(v4);
-      }else if (command == "5"){
-        motor2.findVolt(v5);
-      }else if (command == "left"){
-        motor2.driveLeft(200,255);
-      }else if (command == "right"){
-        motor2.driveRight(200);
-      }else if (command == "up"){
+      Serial.println(command);
+      if(getStringPartByNr(command,'-',0)=="command") {
+          if(getStringPartByNr(command,'-',1)=="x") {
+              motor2.findVolt(v[getStringPartByNr(command,'-',2).toInt() - 1 ]);
+          } else if(getStringPartByNr(command,'-',1)=="y") {
+              motor1.findVoltY(v[getStringPartByNr(command,'-',2).toInt()-1]);
+          }
+      } else if (command == "left"){
+        motor2.driveLeft(800);
+      } else if (command == "right"){
+        motor2.driveRight(800);
+      } else if (command == "up"){
         motor1.driveLeft(600,255);
         motor1.driveLeft(2000,100);
-        
-      }else if (command == "down"){
+      } else if (command == "down"){
         motor1.driveRight(300, 90);
         motor1.driveLeft(2000,100);
-      }
-      else{
+      } else {
+        Serial.println("Unknown command");
         motor1.stop();
         motor2.stop();
       }
   }
+}
 
-/*
-  
-  int readPower = analogRead(A0);
-  Serial.println(readPower);
- // return;
-    
-  if (Serial.available() > 0) {
-      command = Serial.read();
-      if (command == 49){
-        motor2.findVolt(v1);
-      }else if (command == 50){
-       motor2.findVolt(v2);
-      }else if (command == 51){
-        motor2.findVolt(v3);
-      }else if (command == 52){
-        motor2.findVolt(v4);
-      }else if (command == 53){
-        motor2.findVolt(v5);
-      }
-      else{
-        motor1.stop();
-        motor2.stop();
-      }
-  }*/
+String getStringPartByNr(String data, char separator, int index) {
+    int stringData = 0;        //variable to count data part nr 
+    String dataPart = "";      //variable to hole the return text
+
+    for(int i = 0; i<data.length(); i++) {    //Walk through the text one letter at a time
+        if(data[i]==separator) {
+            //Count the number of times separator character appears in the text
+            stringData++;
+        } else if(stringData==index) {
+            //get the text when separator is the rignt one
+            dataPart.concat(data[i]);
+        } else if(stringData>index) {
+            //return text and stop if the next separator appears - to save CPU-time
+            return dataPart;
+            break;
+        }
+    }
+    //return text if this is the last part
+    return dataPart;
 }
 
