@@ -21,6 +21,15 @@ void Motor::driveRight(int duration) {
   this->stop();
 }
 
+
+void Motor::driveRight(int duration, byte power) {
+  digitalWrite(pin1, HIGH);
+  analogWrite(pin2, power);
+  delay(duration);
+  this->stop();
+}
+
+
 void Motor::driveLeft() {
   digitalWrite(pin1, LOW);
   analogWrite(pin2, this->power);
@@ -28,6 +37,14 @@ void Motor::driveLeft() {
 
 void Motor::driveLeft(int duration) {
   this->driveLeft();
+  delay(duration);
+  this->stop();
+}
+
+
+void Motor::driveLeft(int duration, byte power) {
+  digitalWrite(pin1, LOW);
+  analogWrite(pin2, power);
   delay(duration);
   this->stop();
 }
