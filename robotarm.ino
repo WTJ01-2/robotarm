@@ -10,11 +10,6 @@ Motor motor2(4, 5, 140);
 
 String command = "";
 int v[5] = {510,338,251,143,30};
-int v1 = 510;
-int v2 = 338;
-int v3 = 251;
-int v4 = 143;
-int v5 = 30;
 
 void setup(){
   Serial.begin(9600);
@@ -43,10 +38,8 @@ void loop(){
         motor2.driveRight(800);
       } else if (command == "up"){
         motor1.driveLeft(600,255);
-        motor1.driveLeft(2000,100);
       } else if (command == "down"){
-        motor1.driveRight(300, 90);
-        motor1.driveLeft(2000,100);
+        motor1.driveRight(600, 90);
       } else {
         Serial.println("Unknown command");
         motor1.stop();
