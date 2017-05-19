@@ -5,11 +5,11 @@ Logsystem message;
 
 Motor motor1(7, 6, 255);
 //linkerPins
-Motor motor2(4, 5, 140);
+Motor motor2(4, 5, 215);
 //rechterPins
 
 String command = "";
-int v[5] = {510,338,251,143,30};
+int v[5] = {470,338,251,143,30};
 
 void setup(){
   Serial.begin(9600);
@@ -22,7 +22,7 @@ void setup(){
 boolean wasZero = false;
 void loop(){
   //int readPower = analogRead(A1);
- // Serial.println(readPower);
+  //Serial.println(readPower);
   if (Serial.available()) {
       command = Serial.readString();
       Serial.println(command);
@@ -31,15 +31,47 @@ void loop(){
               motor2.findVolt(v[getStringPartByNr(command,'-',2).toInt() - 1 ]);
           } else if(getStringPartByNr(command,'-',1)=="y") {
               motor1.findVoltY(v[getStringPartByNr(command,'-',2).toInt()-1]);
+          } else if(getStringPartByNr(command,'-',1)=="arm_up") {
+              motor1.driveLeft( 350,160);
+          } else if(getStringPartByNr(command,'-',1)=="all_left") {
+              motor2.driveLeft( 4000,255);
           }
-      } else if (command == "left"){
-        motor2.driveLeft(800);
-      } else if (command == "right"){
-        motor2.driveRight(800);
-      } else if (command == "up"){
-        motor1.driveLeft(600,255);
-      } else if (command == "down"){
-        motor1.driveRight(600, 90);
+      } else if(getStringPartByNr(command,'-',0)=="left") {
+        if(getStringPartByNr(command,'-',1)=="") {
+          motor2.driveLeft(1500,160);
+        } else if (getStringPartByNr(command,'-',2)=="") {
+          motor2.driveLeft(getStringPartByNr(command,'-',1).toInt(),255);
+        } else {
+          motor2.driveLeft(getStringPartByNr(command,'-',1).toInt(),getStringPartByNr(command,'-',2).toInt());
+        }
+      } else if(getStringPartByNr(command,'-',0)=="right") {
+        if(getStringPartByNr(command,'-',1)=="") {
+          motor2.driveRight(1500,160);
+        } else if (getStringPartByNr(command,'-',2)=="") {
+          motor2.driveRight(getStringPartByNr(command,'-',1).toInt(),255);
+        } else {
+          motor2.driveRight(getStringPartByNr(command,'-',1).toInt(),getStringPartByNr(command,'-',2).toInt());
+        }
+      } else if(getStringPartByNr(command,'-',0)=="up") {
+        if(getStringPartByNr(command,'-',1)=="") {
+          motor1.driveLeft(500,255);
+        } else if (getStringPartByNr(command,'-',2)=="") {
+          motor1.driveLeft(getStringPartByNr(command,'-',1).toInt(),255);
+        } else {
+          motor1.driveLeft(getStringPartByNr(command,'-',1).toInt(),getStringPartByNr(command,'-',2).toInt());
+        }
+      } else if(getStringPartByNr(command,'-',0)=="down") {
+        if(getStringPartByNr(command,'-',1)=="") {
+          motor1.driveRight(500,255);
+        } else if (getStringPartByNr(command,'-',2)=="") {
+          motor1.driveRight(getStringPartByNr(command,'-',1).toInt(),255);
+        } else {
+          motor1.driveRight(getStringPartByNr(command,'-',1).toInt(),getStringPartByNr(command,'-',2).toInt());
+        }
+      } else if(getStringPartByNr(command,'-',0)=="getproduct") {
+        motor2.findVolt(v[getStringPartByNr(command,'-',1).toInt() - 1 ]); //Get the X
+        motor1.findVoltY(v[getStringPartByNr(command,'-',2).toInt() - 1 ]); //Get the Y
+        Serial.println("tsp-update-at_location");
       } else {
         Serial.println("Unknown command");
         motor1.stop();
@@ -51,7 +83,6 @@ void loop(){
 String getStringPartByNr(String data, char separator, int index) {
     int stringData = 0;        //variable to count data part nr 
     String dataPart = "";      //variable to hole the return text
-
     for(int i = 0; i<data.length(); i++) {    //Walk through the text one letter at a time
         if(data[i]==separator) {
             //Count the number of times separator character appears in the text
