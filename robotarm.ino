@@ -13,6 +13,7 @@ int v[5] = {470,338,251,143,30};
 
 void setup(){
   Serial.begin(9600);
+  Serial.setTimeout(100);
   pinMode(A0, INPUT);
   pinMode(A1, INPUT);
   pinMode(3, OUTPUT);
@@ -25,7 +26,7 @@ void loop(){
   //Serial.println(readPower);
   if (Serial.available()) {
       command = Serial.readString();
-      Serial.println(command);
+      //Serial.println(command);
       if(getStringPartByNr(command,'-',0)=="command") {
           if(getStringPartByNr(command,'-',1)=="x") {
               motor2.findVolt(v[getStringPartByNr(command,'-',2).toInt() - 1 ]);

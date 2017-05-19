@@ -61,17 +61,17 @@ void Motor::findVolt(int volt) {
     this->whereAmI(volt);
   }else{
     int readPower = analogRead(A0);
-    Serial.println(currentVolt); 
+    //Serial.println(currentVolt); 
     if((currentVolt > volt*0.90) && (currentVolt < (volt*1.1))){
-      Serial.println("Hij heeft hem gezien"); 
+      //Serial.println("Hij heeft hem gezien"); 
       this->stop();
       //this->checkVolt(volt);
     }else{
       if(currentVolt > volt) {
-        Serial.println("Hij is hoger dan vorige"); 
+        //Serial.println("Hij is hoger dan vorige"); 
         this->driveRight(); 
       }else if(currentVolt < volt){
-        Serial.println("Hij is lager dan vorige"); 
+        //Serial.println("Hij is lager dan vorige"); 
         this->driveLeft();
       }
       if(readPower > 15){
@@ -87,16 +87,16 @@ void Motor::checkVolt(int volt) {
   int readPower = analogRead(A0);
   if((readPower > volt*0.90) && (readPower < (volt*1.1))){
       this->stop();
-      Serial.println("Hij is er nog"); 
+      //Serial.println("Hij is er nog"); 
   } else if(currentVolt < volt) {
-      Serial.println("Ik moet terug naar rechts"); 
+      //Serial.println("Ik moet terug naar rechts"); 
     this->driveRight();
     if(readPower > 15){
       currentVolt = readPower;
     }   
     this->findVolt(volt);
   }else if(currentVolt > volt){
-    Serial.println("Ik moet terug naar links");
+    //Serial.println("Ik moet terug naar links");
     this->driveLeft();
     if(readPower > 15){
       currentVolt = readPower;
@@ -108,24 +108,24 @@ void Motor::checkVolt(int volt) {
 void Motor::findVoltY(int volt) {
   Motor::checkDuur(volt);
 
-  Serial.println("findVoltY"); 
+  //Serial.println("findVoltY"); 
   if(currentVolt == 0){
     this->whereAmIY(volt);
   }else{
     int readPower = analogRead(A1);
-    Serial.println(currentVolt); 
+    //Serial.println(currentVolt); 
     if((currentVolt > volt*0.90) && (currentVolt < (volt*1.1))){
       this->startTime = 0;
-      Serial.println("Hij staat er al"); 
+      //Serial.println("Hij staat er al"); 
       this->stop();
     }else{
       if(currentVolt > volt){
-        Serial.println("Hij is hoger dan vorige Y"); 
+        //Serial.println("Hij is hoger dan vorige Y"); 
         digitalWrite(pin1, LOW);
         analogWrite(pin2, this->upPower);
       }else if(currentVolt < volt){
 
-        Serial.println("Hij is lager dan vorige Y"); 
+        //Serial.println("Hij is lager dan vorige Y"); 
         digitalWrite(pin1, HIGH);
         analogWrite(pin2, this->downPower);
 
@@ -169,7 +169,7 @@ void Motor::checkDuur(int volt) {
     
   if(this->startTime!=0) {
     if(millis() - this->startTime > 10000) {
-      Serial.println("Ik ben te lang bezig");
+      //Serial.println("Ik ben te lang bezig");
       this->startTime = millis();
       this->currentVolt=0;
       this->upPower += 20;
