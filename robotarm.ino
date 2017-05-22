@@ -22,7 +22,7 @@ void setup(){
 
 boolean wasZero = false;
 void loop(){
-  //int readPower = analogRead(A1);
+  //int readPower = analogRead(A0);
   //Serial.println(readPower);
   if (Serial.available()) {
       command = Serial.readString();
@@ -30,12 +30,17 @@ void loop(){
       if(getStringPartByNr(command,'-',0)=="command") {
           if(getStringPartByNr(command,'-',1)=="x") {
               motor2.findVolt(v[getStringPartByNr(command,'-',2).toInt() - 1 ]);
+              Serial.println("tsp-update-at_x_"+getStringPartByNr(command,'-',2));
           } else if(getStringPartByNr(command,'-',1)=="y") {
               motor1.findVoltY(v[getStringPartByNr(command,'-',2).toInt()-1]);
+              Serial.println("tsp-update-at_y_"+getStringPartByNr(command,'-',2));
           } else if(getStringPartByNr(command,'-',1)=="arm_up") {
-              motor1.driveLeft( 350,160);
-          } else if(getStringPartByNr(command,'-',1)=="all_left") {
+              motor1.driveLeft( 600,120);
+              Serial.println("tsp-update-arm_is_up");
+          }
+          else if(getStringPartByNr(command,'-',1)=="all_left") {
               motor2.driveLeft( 4000,255);
+              Serial.println("tsp-update-all_left");
           }
       } else if(getStringPartByNr(command,'-',0)=="left") {
         if(getStringPartByNr(command,'-',1)=="") {

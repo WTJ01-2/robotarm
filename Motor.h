@@ -25,6 +25,7 @@ class Motor
     int upPower;
     int downPower;
     long startTime;
+    long whereAmIDuur;
     int pin1;
     int pin2;
 
