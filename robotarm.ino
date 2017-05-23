@@ -5,7 +5,7 @@ Logsystem message;
 
 Motor motor1(7, 6, 255);
 //linkerPins
-Motor motor2(4, 5, 215);
+Motor motor2(4, 5, 230);
 //rechterPins
 
 String command = "";
@@ -35,13 +35,18 @@ void loop(){
               motor1.findVoltY(v[getStringPartByNr(command,'-',2).toInt()-1]);
               Serial.println("tsp-update-at_y_"+getStringPartByNr(command,'-',2));
           } else if(getStringPartByNr(command,'-',1)=="arm_up") {
-              motor1.driveLeft( 600,120);
+              motor1.driveLeft( 450,140);
               motor1.resetCurrentVolt();
               Serial.println("tsp-update-arm_is_up");
-          }
-          else if(getStringPartByNr(command,'-',1)=="all_left") {
-              motor2.driveLeft( 5000,255);
+          } else if(getStringPartByNr(command,'-',1)=="all_left") {
+              motor2.driveLeft( 7000,235);
               Serial.println("tsp-update-all_left");
+          } else if(getStringPartByNr(command,'-',1)=="prepare_sort") {
+              motor1.driveRight(500, 50);
+              Serial.println("tsp-update-ready_to_sort");
+          } else if(getStringPartByNr(command,'-',1)=="reset") {
+              motor1.resetCurrentVolt();
+              Serial.println("tsp-update-ready_to_sort");
           }
       } else if(getStringPartByNr(command,'-',0)=="left") {
         if(getStringPartByNr(command,'-',1)=="") {

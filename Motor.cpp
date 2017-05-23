@@ -16,6 +16,7 @@ Motor::Motor(int pin1, int pin2, int power){
 
 void Motor::resetCurrentVolt() {
   this->currentVolt=0;
+  this->whereAmIDuur=0;
 }
 
 void Motor::driveRight() {
@@ -157,10 +158,13 @@ void Motor::whereAmI(int volt) {
    this->stop();
    this->whereAmIDuur=0;
    this->findVolt(volt);
-  }else if(millis()-whereAmIDuur > 10000) {
+  }else if(millis()-whereAmIDuur > 10000 && millis()-whereAmIDuur < 20000) {
     //Serial.println("Ik ben te lang aan het zoeken");
     this->driveLeft();
     this->whereAmI(volt);
+  } else if(millis()-whereAmIDuur > 20000) {
+    //Serial.println("Ik ben te lang aan het zoeken");
+    this->whereAmIDuur = 0;
   } else {
     this->driveRight();
     this->whereAmI(volt);
@@ -168,7 +172,7 @@ void Motor::whereAmI(int volt) {
 }
 
 void Motor::whereAmIY(int volt) {
-  //Motor::checkDuur(volt);
+  Motor::checkDuur(volt);
   int readPower = analogRead(A1);
   if(readPower > 15){
    this->currentVolt = readPower;
