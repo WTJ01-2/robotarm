@@ -36,10 +36,11 @@ void loop(){
               Serial.println("tsp-update-at_y_"+getStringPartByNr(command,'-',2));
           } else if(getStringPartByNr(command,'-',1)=="arm_up") {
               motor1.driveLeft( 600,120);
+              motor1.resetCurrentVolt();
               Serial.println("tsp-update-arm_is_up");
           }
           else if(getStringPartByNr(command,'-',1)=="all_left") {
-              motor2.driveLeft( 4000,255);
+              motor2.driveLeft( 5000,255);
               Serial.println("tsp-update-all_left");
           }
       } else if(getStringPartByNr(command,'-',0)=="left") {

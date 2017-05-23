@@ -14,6 +14,10 @@ Motor::Motor(int pin1, int pin2, int power){
   this->whereAmIDuur=0;
 }
 
+void Motor::resetCurrentVolt() {
+  this->currentVolt=0;
+}
+
 void Motor::driveRight() {
   digitalWrite(pin1, HIGH);
   analogWrite(pin2, this->power);
@@ -65,7 +69,7 @@ void Motor::findVolt(int volt) {
     //Serial.println(currentVolt); 
     if((currentVolt > volt*0.90) && (currentVolt < (volt*1.1))){
       //Serial.println("Hij heeft hem gezien"); 
-      this->currentVolt=0;
+      //this->currentVolt=0;
       this->stop();
       //this->checkVolt(volt);
     }else{

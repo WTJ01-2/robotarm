@@ -7,6 +7,7 @@ class Motor
 {
   public:
     Motor(int pin1, int pin2, int power);
+    void resetCurrentVolt();
     void driveRight();
     void driveRight(int duration);
     void driveRight(int duration, byte power);
