@@ -8,6 +8,7 @@ Motor::Motor(int pin1, int pin2, int power){
   this->pin1 = pin1;
   this->pin2 = pin2;
   this->currentVolt = 0;
+  this->lastPin = 0;
   pinMode(pin1, OUTPUT);
   pinMode(pin2, OUTPUT);
   this->startTime=0;
@@ -17,6 +18,7 @@ Motor::Motor(int pin1, int pin2, int power){
 void Motor::resetCurrentVolt() {
   this->currentVolt=0;
   this->whereAmIDuur=0;
+  this->startTime=0;
 }
 
 void Motor::driveRight() {
@@ -92,7 +94,7 @@ void Motor::findVolt(int volt) {
 void Motor::checkVolt(int volt) {
   delay(100);
   int readPower = analogRead(A0);
-  if((readPower > volt*0.70) && (readPower < (volt*1.1))){
+  if((readPower > volt*0.95) && (readPower < (volt*1.1))){
       this->stop();
       //Serial.println("Hij is er nog"); 
   } else if(currentVolt < volt) {
@@ -117,12 +119,17 @@ void Motor::findVoltY(int volt) {
 
   //Serial.println("findVoltY"); 
   if(currentVolt == 0){
-    this->whereAmIY(volt);
+      if(lastPin > volt) {
+        this->whereAmIY(volt, true);
+      } else {
+        this->whereAmIY(volt, false);
+      }
   }else{
     int readPower = analogRead(A1);
     //Serial.println(currentVolt); 
     if((currentVolt > volt*0.90) && (currentVolt < (volt*1.1))){
       this->startTime = 0;
+      this->lastPin=currentVolt;
       this->currentVolt=0;
       //Serial.println("Hij staat er al"); 
       this->stop();
@@ -158,20 +165,21 @@ void Motor::whereAmI(int volt) {
    this->stop();
    this->whereAmIDuur=0;
    this->findVolt(volt);
-  }else if(millis()-whereAmIDuur > 10000 && millis()-whereAmIDuur < 20000) {
+  /*}else if(millis()-whereAmIDuur > 10000 && millis()-whereAmIDuur < 20000) {
     //Serial.println("Ik ben te lang aan het zoeken");
     this->driveLeft();
     this->whereAmI(volt);
   } else if(millis()-whereAmIDuur > 20000) {
     //Serial.println("Ik ben te lang aan het zoeken");
     this->whereAmIDuur = 0;
-  } else {
+  }*/
+  }else{
     this->driveRight();
     this->whereAmI(volt);
   }
 }
 
-void Motor::whereAmIY(int volt) {
+/*void Motor::whereAmIY(int volt) {
   Motor::checkDuur(volt);
   int readPower = analogRead(A1);
   if(readPower > 15){
@@ -182,6 +190,22 @@ void Motor::whereAmIY(int volt) {
     digitalWrite(pin1, LOW);
     analogWrite(pin2, this->upPower);
    this->whereAmIY(volt);
+  }
+}*/
+
+void Motor::whereAmIY(int volt, boolean up) {
+  Motor::checkDuur(volt);
+  int readPower = analogRead(A1);
+  if(readPower > 15){
+   this->currentVolt = readPower;
+   this->lastPin=readPower;
+   this->stop();
+   this->findVoltY(volt);
+  }else{
+    if(up) digitalWrite(pin1, LOW);
+    else digitalWrite(pin1, HIGH);
+    analogWrite(pin2, this->upPower);
+   this->whereAmIY(volt, up);
   }
 }
 
@@ -195,7 +219,11 @@ void Motor::checkDuur(int volt) {
       this->upPower += 20;
       this->downPower += 20;
       this->driveRight(2000, this->downPower+10);
-      this->whereAmIY(volt);
+      if(lastPin > volt) {
+        this->whereAmIY(volt, true);
+      } else {
+        this->whereAmIY(volt, false);
+      }
     }
   } else {
     startTime = millis();

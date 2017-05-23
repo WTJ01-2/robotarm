@@ -15,7 +15,7 @@ class Motor
     void driveLeft(int duration);
     void driveLeft(int duration, byte power);
     void whereAmI(int volt);
-    void whereAmIY(int volt);
+    void whereAmIY(int volt, boolean up);
     void checkVolt(int volt);
     void findVolt(int volt);
     void findVoltY(int volt);
@@ -29,6 +29,7 @@ class Motor
     long whereAmIDuur;
     int pin1;
     int pin2;
+    int lastPin;
 
     int currentVolt;
     int searchVolt;

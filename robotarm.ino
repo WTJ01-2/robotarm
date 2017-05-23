@@ -46,7 +46,7 @@ void loop(){
               Serial.println("tsp-update-ready_to_sort");
           } else if(getStringPartByNr(command,'-',1)=="reset") {
               motor1.resetCurrentVolt();
-              Serial.println("tsp-update-ready_to_sort");
+              Serial.println("tsp-update-reset_done");
           }
       } else if(getStringPartByNr(command,'-',0)=="left") {
         if(getStringPartByNr(command,'-',1)=="") {
