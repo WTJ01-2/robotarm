@@ -39,7 +39,8 @@ void loop(){
               motor1.resetCurrentVolt();
               Serial.println("tsp-update-arm_is_up");
           } else if(getStringPartByNr(command,'-',1)=="all_left") {
-              motor2.driveLeft( 7000,235);
+              motor2.driveLeft( 8000,235);
+              motor1.resetCurrentVolt();
               Serial.println("tsp-update-all_left");
           } else if(getStringPartByNr(command,'-',1)=="prepare_sort") {
               motor1.driveRight(500, 50);

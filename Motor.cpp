@@ -70,7 +70,7 @@ void Motor::findVolt(int volt) {
   }else{
     int readPower = analogRead(A0);
     //Serial.println(currentVolt); 
-    if((currentVolt > volt*0.90) && (currentVolt < (volt*1.1))){
+    if((currentVolt > volt*0.95) && (currentVolt < (volt*1.05))){
       //Serial.println("Hij heeft hem gezien"); 
       //this->currentVolt=0;
       this->stop();
@@ -94,7 +94,7 @@ void Motor::findVolt(int volt) {
 void Motor::checkVolt(int volt) {
   delay(100);
   int readPower = analogRead(A0);
-  if((readPower > volt*0.95) && (readPower < (volt*1.1))){
+  if((readPower > volt*0.95) && (readPower < (volt*1.05))){
       this->stop();
       //Serial.println("Hij is er nog"); 
   } else if(currentVolt < volt) {
@@ -119,15 +119,16 @@ void Motor::findVoltY(int volt) {
 
   //Serial.println("findVoltY"); 
   if(currentVolt == 0){
-      if(lastPin > volt) {
-        this->whereAmIY(volt, true);
-      } else {
-        this->whereAmIY(volt, false);
-      }
+//      if(lastPin < volt) {
+//        this->whereAmIY(volt, true);
+//      } else {
+//        this->whereAmIY(volt, false);
+//      }
+    this->whereAmIY(volt, true);
   }else{
     int readPower = analogRead(A1);
     //Serial.println(currentVolt); 
-    if((currentVolt > volt*0.90) && (currentVolt < (volt*1.1))){
+    if((currentVolt > volt*0.95) && (currentVolt < (volt*1.05))){
       this->startTime = 0;
       this->lastPin=currentVolt;
       this->currentVolt=0;
@@ -219,11 +220,13 @@ void Motor::checkDuur(int volt) {
       this->upPower += 20;
       this->downPower += 20;
       this->driveRight(2000, this->downPower+10);
-      if(lastPin > volt) {
-        this->whereAmIY(volt, true);
-      } else {
-        this->whereAmIY(volt, false);
-      }
+//      if(lastPin > volt) {
+//        this->whereAmIY(volt, true);
+//      } else {
+//        this->whereAmIY(volt, false);
+//      }
+      
+      this->whereAmIY(volt, true);
     }
   } else {
     startTime = millis();
